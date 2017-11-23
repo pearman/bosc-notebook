@@ -1,0 +1,23 @@
+:host>>>mat-card {
+  background: #fff8e1;
+}
+
+:host>>>.td-key {
+  color: grey;
+}
+
+:host>>>.value {
+  color: black;
+}
+
+:host>>>.number {
+  color: green;
+}
+
+:host>>>.boolean {
+  color: mediumslateblue;
+}
+
+:host>>>.string {
+  color: orangered;
+}

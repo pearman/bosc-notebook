@@ -1,0 +1,27 @@
+.small-icon {
+  font-size: 14pt;
+}
+
+.small-button {
+  height: 30px;
+}
+
+:host>>>.td-key {
+  color: grey;
+}
+
+:host>>>.value {
+  color: black;
+}
+
+:host>>>.number {
+  color: green;
+}
+
+:host>>>.boolean {
+  color: mediumslateblue;
+}
+
+:host>>>.string {
+  color: orangered;
+}
