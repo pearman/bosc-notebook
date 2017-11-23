@@ -1,0 +1,13 @@
+<mat-card (click)="toggleEditMode(true)">
+
+  <div *ngIf="editMode">
+    <button mat-button (click)="toggleEditMode(false); $event.stopPropagation()">
+      Done
+    </button>
+    <br />
+  </div>
+  <td-text-editor *ngIf="editMode" [(ngModel)]="comment" (ngModelChange)="emitCommentChange()" [options]="options" #textEditor></td-text-editor>
+  <div *ngIf="!editMode" style="padding: 20px;">
+    <td-markdown [content]="comment"></td-markdown>
+  </div>
+</mat-card>

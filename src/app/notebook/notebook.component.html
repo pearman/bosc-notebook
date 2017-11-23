@@ -1,0 +1,25 @@
+<div style="padding: 10px; height: 100%; overflow:auto">
+  <div *ngFor=" let card of cards; let index=index">
+    <button mat-icon-button (click)="removeCard(index)">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button mat-icon-button (click)="addCodeCard(index) ">
+      <mat-icon>code</mat-icon>
+    </button>
+    <button mat-icon-button (click)="addCommentCard(index) ">
+      <mat-icon>comment</mat-icon>
+    </button>
+    <button *ngIf="card.type === 'code'" mat-icon-button (click)="evalCard(card, index) ">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <app-code-card *ngIf="card.type === 'code' " [(code)]="card.value "></app-code-card>
+    <app-comment-card *ngIf="card.type ==='comment' " [(comment)]="card.value "></app-comment-card>
+    <app-result-card *ngIf="card.type === 'result'" [data]="card.value"></app-result-card>
+  </div>
+  <button mat-icon-button (click)="addCodeCard() ">
+    <mat-icon>code</mat-icon>
+  </button>
+  <button mat-icon-button (click)="addCommentCard() ">
+    <mat-icon>comment</mat-icon>
+  </button>
+</div>
