@@ -1,43 +1,59 @@
 <div style="display:flex; height: 100%">
   <div [style.width]="showScope ? '75%' : '100%'" style="height: 100%; overflow:auto; background: lightgrey">
-    <mat-toolbar color="primary">
-      <button mat-icon-button>
+    <mat-toolbar [style.width]="showScope ? '75%' : '100%'" color="primary" style="position: fixed; z-index: 10000">
+      <mat-form-field color="accent">
+        <input matInput [(ngModel)]="notebookTitle">
+      </mat-form-field>
+      <!-- <button mat-icon-button (save)="save()">
+        <mat-icon>insert_drive_file</mat-icon>
+      </button> -->
+      <a mat-icon-button [href]="saveData()" [download]="notebookTitle + '.json'">
         <mat-icon>save</mat-icon>
-      </button>
-      <button mat-icon-button>
+      </a>
+      <button mat-icon-button (click)="openFile = !openFile">
         <mat-icon>folder</mat-icon>
       </button>
+      <input [@slideInOutRight] *ngIf="openFile" type='file' [(ngModel)]="file" (change)="loadFile($event)" />
+      <div style="width: 30px"></div>
       <div style="display: flex; width: 100%"></div>
       <button mat-icon-button (click)="showScope = !showScope">
         <mat-icon *ngIf="!showScope">keyboard_arrow_left</mat-icon>
         <mat-icon *ngIf="showScope">keyboard_arrow_right</mat-icon>
       </button>
     </mat-toolbar>
-    <div *ngFor=" let card of cards; let index=index" [@slideInOut]="card.animState">
-      <button mat-icon-button class="small-button" (click)="removeCard(index)">
-        <mat-icon class="small-icon">close</mat-icon>
-      </button>
-      <button mat-icon-button class="small-button" (click)="addCodeCard(index) ">
-        <mat-icon class="small-icon">code</mat-icon>
-      </button>
-      <button mat-icon-button class="small-button" (click)="addCommentCard(index) ">
-        <mat-icon class="small-icon">comment</mat-icon>
-      </button>
-      <button *ngIf="card.type === 'code'" mat-icon-button class="small-button" (click)="evalCard(card, index) ">
-        <mat-icon class="small-icon">play_arrow</mat-icon>
-      </button>
-      <app-code-card *ngIf="card.type === 'code' " [(code)]="card.value"></app-code-card>
-      <app-comment-card *ngIf="card.type ==='comment' " [(comment)]="card.value"></app-comment-card>
+    <div style="height: 64px"></div>
+    <div *ngFor=" let card of cards; let index=index" [@slideInOutLeft]>
+      <div style="display:flex">
+        <button mat-icon-button (click)="removeCard(index)">
+          <mat-icon (click)="removeCard(index)" class="small-icon">close</mat-icon>
+        </button>
+        <button mat-icon-button (click)="addCodeCard(index) ">
+          <mat-icon class="small-icon">code</mat-icon>
+        </button>
+        <button mat-icon-button (click)="addCommentCard(index) ">
+          <mat-icon class="small-icon">comment</mat-icon>
+        </button>
+        <button *ngIf="card.type === 'code'" mat-icon-button (click)="evalCard(card, index) ">
+          <mat-icon class="small-icon">play_arrow</mat-icon>
+        </button>
+        <span style="display: flex; width:100%"></span>
+        <b style="margin: 10px">{{card.type}}</b>
+      </div>
+      <app-code-card *ngIf="card.type === 'code' " [(code)]="card.value" [(cardHeight)]="card.height"></app-code-card>
+      <app-comment-card *ngIf="card.type ==='comment' " [(comment)]="card.value" [(editMode)]="card.editMode"></app-comment-card>
       <app-result-card *ngIf="card.type === 'result'" [data]="card.value"></app-result-card>
     </div>
-    <button mat-icon-button (click)="addCodeCard() ">
-      <mat-icon>code</mat-icon>
-    </button>
-    <button mat-icon-button (click)="addCommentCard() ">
-      <mat-icon>comment</mat-icon>
-    </button>
+    <div style="margin: 10px">
+      Add a new card:
+      <button mat-icon-button (click)="addCodeCard() ">
+        <mat-icon>code</mat-icon>
+      </button>
+      <button mat-icon-button (click)="addCommentCard() ">
+        <mat-icon>comment</mat-icon>
+      </button>
+    </div>
   </div>
-  <div *ngIf="showScope" style="height: 100%; background: white; width: 25%; font-family: Roboto, 'Helvetica Neue', sans-serif;">
+  <div *ngIf="showScope" style="height: 100%; background: white; width: 25%;">
     <td-json-formatter [data]="prune(namespace[0])" [levelsOpen]="1">
     </td-json-formatter>
   </div>

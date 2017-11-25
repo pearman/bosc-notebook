@@ -10,16 +10,22 @@ import {
   query,
   stagger
 } from '@angular/animations';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
   styleUrls: ['./notebook.component.css'],
   animations: [
-    trigger('slideInOut', [
+    trigger('slideInOutLeft', [
       state('void', style({ transform: 'translateX(-100%)' })),
       state('right', style({ transform: 'translateX(0)' })),
-      transition('* => *', animate(300))
+      transition('* => *', animate(200))
+    ]),
+    trigger('slideInOutRight', [
+      state('void', style({ transform: 'translateX(100%)' })),
+      state('right', style({ transform: 'translateX(0)' })),
+      transition('* => *', animate(200))
     ])
   ]
 })
@@ -27,23 +33,62 @@ export class NotebookComponent implements OnInit {
   cards = [];
   namespace = bosc.newScope();
   showScope = false;
+  openFile = false;
+  file = '';
+  notebookTitle = 'New Notebook';
 
-  constructor() {}
+  constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {}
+
+  saveData() {
+    return this.sanitizer.bypassSecurityTrustUrl(
+      `data: 'text/json;charset=utf-8,` +
+        encodeURIComponent(
+          JSON.stringify({
+            title: this.notebookTitle,
+            cards: this.cards
+          })
+        )
+    );
+  }
+
+  loadFile(event) {
+    console.log('Loading ', event);
+    let file = _.get(event, ['target', 'files', 0]);
+    if (file) {
+      let reader = new FileReader();
+      let textFile = event.target.files[0];
+      reader.readAsText(textFile);
+      reader.onload = file => {
+        console.log(file);
+        let result: any = JSON.parse(
+          _.get(
+            file,
+            ['currentTarget', 'result'],
+            `{title:'New Notebook', cards: []}`
+          )
+        );
+        console.log(result);
+        this.notebookTitle = result.title;
+        this.cards = result.cards;
+        console.log(this.cards, this.notebookTitle);
+      };
+    }
+  }
 
   removeCard(index) {
     this.cards.splice(index, 1);
   }
 
   addCodeCard(index = -1) {
-    let card = { type: 'code', value: '', animState: 'right' };
+    let card = { type: 'code', value: '', height: 50 };
     if (index >= 0) this.cards.splice(index, 0, card);
     else this.cards.push(card);
   }
 
   addCommentCard(index = -1) {
-    let card = { type: 'comment', value: '', animState: 'right' };
+    let card = { type: 'comment', value: '', editMode: true };
     if (index >= 0) this.cards.splice(index, 0, card);
     else this.cards.push(card);
   }
@@ -64,7 +109,7 @@ export class NotebookComponent implements OnInit {
       console.log(err);
       let newCard = {
         type: 'result',
-        value: err,
+        value: this.prune(err),
         animState: 'right'
       };
       console.log(this.cards);

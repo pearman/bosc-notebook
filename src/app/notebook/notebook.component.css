@@ -2,10 +2,6 @@
   font-size: 14pt;
 }
 
-.small-button {
-  height: 30px;
-}
-
 :host>>>.td-key {
   color: grey;
 }

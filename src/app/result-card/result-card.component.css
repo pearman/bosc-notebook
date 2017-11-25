@@ -1,5 +1,6 @@
 :host>>>mat-card {
-  background: #fff8e1;
+  background: #ffffff;
+  margin: 0px;
 }
 
 :host>>>.td-key {

@@ -7,7 +7,8 @@ import {
   MatCheckboxModule,
   MatToolbarModule,
   MatCardModule,
-  MatIconModule
+  MatIconModule,
+  MatInputModule
 } from '@angular/material';
 import { CovalentJsonFormatterModule } from '@covalent/core';
 import { CovalentMarkdownModule } from '@covalent/markdown';
@@ -32,6 +33,7 @@ import { ResultCardComponent } from './result-card/result-card.component';
   imports: [
     BrowserModule,
     FormsModule,
+    MatInputModule,
     MatButtonModule,
     MatToolbarModule,
     MatCardModule,

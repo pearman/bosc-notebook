@@ -20,7 +20,9 @@ export class CommentCardComponent implements OnInit {
     toolbar: false
   };
 
-  editMode = true;
+  @Input() editMode = true;
+  @Output() editModeChange = new EventEmitter<boolean>();
+
   @Input() comment = '';
   @Output() commentChange = new EventEmitter<string>();
 
@@ -35,6 +37,7 @@ export class CommentCardComponent implements OnInit {
     } else if (!this.editMode && cardClicked) {
       this.editMode = !this.editMode;
     }
+    this.editModeChange.emit(this.editMode);
   }
 
   emitCommentChange() {

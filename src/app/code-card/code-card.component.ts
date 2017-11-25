@@ -6,7 +6,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./code-card.component.css']
 })
 export class CodeCardComponent implements OnInit {
-  cardHeight = 50;
+  @Output() cardHeightChange = new EventEmitter<Number>();
+  @Input() cardHeight = 50;
 
   @Input() code = '';
   @Output() codeChange = new EventEmitter<string>();
@@ -21,6 +22,7 @@ export class CodeCardComponent implements OnInit {
 
   expand(amount) {
     this.cardHeight = Math.max(50, this.cardHeight + amount);
+    this.cardHeightChange.emit(this.cardHeight);
   }
 
   emitCodeChange() {
