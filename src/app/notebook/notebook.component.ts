@@ -12,6 +12,8 @@ import {
 } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
 
+import { defaultNotebook } from './default-notebook';
+
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
@@ -37,7 +39,10 @@ export class NotebookComponent implements OnInit {
   file = '';
   notebookTitle = 'New Notebook';
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer) {
+    this.notebookTitle = defaultNotebook.title;
+    this.cards = defaultNotebook.cards;
+  }
 
   ngOnInit() {}
 
@@ -54,14 +59,12 @@ export class NotebookComponent implements OnInit {
   }
 
   loadFile(event) {
-    console.log('Loading ', event);
     let file = _.get(event, ['target', 'files', 0]);
     if (file) {
       let reader = new FileReader();
       let textFile = event.target.files[0];
       reader.readAsText(textFile);
       reader.onload = file => {
-        console.log(file);
         let result: any = JSON.parse(
           _.get(
             file,
@@ -69,10 +72,8 @@ export class NotebookComponent implements OnInit {
             `{title:'New Notebook', cards: []}`
           )
         );
-        console.log(result);
         this.notebookTitle = result.title;
         this.cards = result.cards;
-        console.log(this.cards, this.notebookTitle);
       };
     }
   }
@@ -101,18 +102,15 @@ export class NotebookComponent implements OnInit {
         value: this.prune(result),
         animState: 'right'
       };
-      console.log(this.namespace);
       if (_.get(this.cards, [index + 1, 'type']) === 'result')
         this.cards[index + 1] = newCard;
       else this.cards.splice(index + 1, 0, newCard);
     } catch (err) {
-      console.log(err);
       let newCard = {
         type: 'result',
         value: this.prune(err),
         animState: 'right'
       };
-      console.log(this.cards);
       if (_.get(this.cards, [index + 1, 'type']) === 'result')
         this.cards[index + 1] = newCard;
       else this.cards.splice(index + 1, 0, newCard);
@@ -121,14 +119,14 @@ export class NotebookComponent implements OnInit {
 
   prune(table) {
     if (_.isNil(table)) return table;
-    if (_.isString(table)) return table;
     let pruned = _.omitBy(
       table,
       (entry, key) => _.has(entry, '_eval') || key === '_context'
     );
     if (_.has(pruned, 'value')) return _.get(pruned, 'value');
     let extraPruned = _.mapValues(pruned, value => {
-      if (_.isEqual(value, table)) return '[self]';
+      if (_.isString(value)) return `Symbol[ ${value} ]`;
+      if (_.isEqual(value, table)) return '[ self ]';
       if (_.isObject(value)) return this.prune(value);
       return value;
     });

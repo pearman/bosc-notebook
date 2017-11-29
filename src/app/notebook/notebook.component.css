@@ -1,5 +1,6 @@
 .small-icon {
   font-size: 14pt;
+  color: white;
 }
 
 :host>>>.td-key {

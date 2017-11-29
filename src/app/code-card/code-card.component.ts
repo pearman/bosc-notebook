@@ -13,7 +13,8 @@ export class CodeCardComponent implements OnInit {
   @Output() codeChange = new EventEmitter<string>();
 
   options = {
-    scrollBeyondLastLine: false
+    scrollBeyondLastLine: false,
+    fontSize: 14
   };
 
   constructor() {}
