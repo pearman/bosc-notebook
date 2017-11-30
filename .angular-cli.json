@@ -7,7 +7,7 @@
     {
       "root": "src",
       "outDir": "docs",
-      "baseHref": "/bosc/",
+      "baseHref": "/bosc-notebook/",
       "assets": [
         "assets",
         "favicon.ico",
