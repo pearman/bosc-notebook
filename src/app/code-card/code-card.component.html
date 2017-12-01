@@ -1,6 +1,6 @@
 <mat-card>
   <td-code-editor [(ngModel)]="code" (ngModelChange)="emitCodeChange()" [automaticLayout]="true" [style.height]="'' + cardHeight + 'px'"
-    [editorOptions]="options" theme="vs" flex language="sql">
+    [editorOptions]="options" theme="vs" flex language="bosc">
   </td-code-editor>
 
   <button mat-button (click)="expand(50)">Expand</button>

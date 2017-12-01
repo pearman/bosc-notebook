@@ -173,7 +173,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/code-card/code-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n  <td-code-editor [(ngModel)]=\"code\" (ngModelChange)=\"emitCodeChange()\" [automaticLayout]=\"true\" [style.height]=\"'' + cardHeight + 'px'\"\n    [editorOptions]=\"options\" theme=\"vs\" flex language=\"sql\">\n  </td-code-editor>\n\n  <button mat-button (click)=\"expand(50)\">Expand</button>\n  <button mat-button (click)=\"expand(-50)\">Shrink</button>\n</mat-card>"
+module.exports = "<mat-card>\n  <td-code-editor [(ngModel)]=\"code\" (ngModelChange)=\"emitCodeChange()\" [automaticLayout]=\"true\" [style.height]=\"'' + cardHeight + 'px'\"\n    [editorOptions]=\"options\" theme=\"vs\" flex language=\"bosc\">\n  </td-code-editor>\n\n  <button mat-button (click)=\"expand(50)\">Expand</button>\n  <button mat-button (click)=\"expand(-50)\">Shrink</button>\n</mat-card>"
 
 /***/ }),
 
